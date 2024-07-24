@@ -5,8 +5,6 @@ stages:
 
 variables:
   DOCKER_IMAGE: "strelchenk0nazar/tgbot"
-  DOCKERHUB_USERNAME: "strelchenk0nazar"
-  DOCKERHUB_PASSWORD: "WGdolarpo30N"
 
 build:
   stage: build
