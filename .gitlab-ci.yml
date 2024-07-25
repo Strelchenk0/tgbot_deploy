@@ -45,9 +45,12 @@ variables:
     IMAGE_NAME: strelchenk0nazar/bot
     IMAGE_TAG: tgbot
 
+stages:
+  - build
 image: node:latest
 
 build_image:
+  stage: build
   image: docker:20.10.16
   services:
     - docker:20.10.16-dind
