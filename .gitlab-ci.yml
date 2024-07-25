@@ -1,42 +1,61 @@
-stages:
-  - build
-  - push
-  - deploy
+# stages:
+#   - build
+#   - push
+#   - deploy
+
+# variables:
+#   DOCKER_IMAGE: "strelchenk0nazar/tgbot"
+
+# build:
+#   stage: build
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   script:
+#     - docker build -t $DOCKER_IMAGE .
+#   only:
+#     - master
+
+# push:
+#   stage: push
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   script:
+#     - echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+#     - docker push $DOCKER_IMAGE
+#   only:
+#     - master
+
+# deploy:
+#   stage: deploy
+#   image: alpine:latest
+#   before_script:
+#     - apk add --no-cache openssh
+#   script:
+#     - mkdir -p ~/.ssh
+#     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+#     - chmod 600 ~/.ssh/id_rsa
+#     - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
+#     - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$SSH_HOST "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD && docker pull $DOCKER_IMAGE && docker run -d --name telegram_bot $DOCKER_IMAGE"
+#   only:
+#     - master
 
 variables:
-  DOCKER_IMAGE: "strelchenk0nazar/tgbot"
+    IMAGE_NAME: strelchenk0nazar/bot
+    IMAGE_TAG: tgbot
 
-build:
-  stage: build
-  image: docker:latest
+image: node:latest
+
+build_image:
+  image: docker:27.1.1-cli
   services:
-    - docker:dind
-  script:
-    - docker build -t $DOCKER_IMAGE .
-  only:
-    - master
-
-push:
-  stage: push
-  image: docker:latest
-  services:
-    - docker:dind
-  script:
-    - echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-    - docker push $DOCKER_IMAGE
-  only:
-    - master
-
-deploy:
-  stage: deploy
-  image: alpine:latest
+    - docker:27.1.1-cli-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
   before_script:
-    - apk add --no-cache openssh
-  script:
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H $SSH_HOST >> ~/.ssh/known_hosts
-    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$SSH_HOST "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD && docker pull $DOCKER_IMAGE && docker run -d --name telegram_bot $DOCKER_IMAGE"
-  only:
-    - master
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD 
+  script: 
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
