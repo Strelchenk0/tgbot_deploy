@@ -35,26 +35,26 @@ async function sendBitcoinPrice() {
     }
 }
 
-// Функція для видалення повідомлень
-async function deleteMessages() {
-    for (const messageId of messageIds) {
-        try {
-            await bot.deleteMessage(chatId, messageId);
-        } catch (error) {
-            console.error('Error deleting message:', error);
-        }
-    }
-    // Очищення списку ID повідомлень після видалення
-    messageIds = [];
-}
+// // Функція для видалення повідомлень
+// async function deleteMessages() {
+//     for (const messageId of messageIds) {
+//         try {
+//             await bot.deleteMessage(chatId, messageId);
+//         } catch (error) {
+//             console.error('Error deleting message:', error);
+//         }
+//     }
+//     // Очищення списку ID повідомлень після видалення
+//     messageIds = [];
+// }
 
 // Використання cron для відправки повідомлення кожну годину
 const sendJob = new CronJob('*/30 * * * *', sendBitcoinPrice, null, true, 'America/Los_Angeles');
 sendJob.start();``
 
-// Використання cron для видалення повідомлень кожні 24 години
-const deleteJob = new CronJob('0 0 * * *', deleteMessages, null, true, 'America/Los_Angeles');
-deleteJob.start();
+// // Використання cron для видалення повідомлень кожні 24 години
+// const deleteJob = new CronJob('0 0 * * *', deleteMessages, null, true, 'America/Los_Angeles');
+// deleteJob.start();
 
 console.log('///    bot is working  ///');
 
