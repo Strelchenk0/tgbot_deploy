@@ -133,4 +133,4 @@ bot.on('callback_query', async (callbackQuery) => {
 const sendJob = new CronJob('0 * * * *', sendBitcoinPrice, null, true, 'America/Los_Angeles');
 sendJob.start();
 
-console.log('///    bot is working   ///');
+console.log('///    bot is working    ///');
