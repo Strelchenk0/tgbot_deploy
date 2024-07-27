@@ -3,17 +3,27 @@ import TelegramBot from 'node-telegram-bot-api';
 import { CronJob } from 'cron';
 
 const telegramToken = '7271006242:AAGxqf5j0lqLMjp8Jn_z0NXGDlr9FlyXrds';
-const chatId = '717796421'; 
 
 const bot = new TelegramBot(telegramToken, { polling: true });
-let messageIds = [];
+let subscribers = [];
+let pricesByDay = {};
+
+bot.onText(/\/start/, (msg) => {
+    const chatId = msg.chat.id;
+    if (!subscribers.includes(chatId)) {
+        subscribers.push(chatId);
+        bot.sendMessage(chatId, "You have subscribed to Bitcoin price updates.");
+    } else {
+        bot.sendMessage(chatId, "You are already subscribed.");
+    }
+});
 
 // Функція для отримання ціни біткоїна з Binance
 async function getBitcoinPrice() {
     try {
         const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
         const data = await response.json();
-        return data.price;
+        return parseFloat(data.price);
     } catch (error) {
         console.error('Error fetching Bitcoin price:', error);
     }
@@ -30,34 +40,67 @@ async function sendBitcoinPrice() {
     const price = await getBitcoinPrice();
     if (price) {
         const formattedPrice = formatPrice(price);
-        const message = await bot.sendMessage(chatId, `Current Bitcoin price: $${formattedPrice}`);
-        messageIds.push(message.message_id);
+        const message = `Current Bitcoin price: $${formattedPrice}`;
+        
+        const dateKey = new Date().toISOString().slice(0, 10);
+        if (!pricesByDay[dateKey]) {
+            pricesByDay[dateKey] = [];
+        }
+        pricesByDay[dateKey].push(price);
+        
+        for (const chatId of subscribers) {
+            bot.sendMessage(chatId, message);
+        }
     }
 }
 
-// // Функція для видалення повідомлень
-// async function deleteMessages() {
-//     for (const messageId of messageIds) {
-//         try {
-//             await bot.deleteMessage(chatId, messageId);
-//         } catch (error) {
-//             console.error('Error deleting message:', error);
-//         }
-//     }
-//     // Очищення списку ID повідомлень після видалення
-//     messageIds = [];
-// }
+// Функція для обробки команди /prices
+bot.onText(/\/prices/, (msg) => {
+    const chatId = msg.chat.id;
+    const args = msg.text.split(' ');
 
-// Використання cron для відправки повідомлення кожну годину
+    if (args.length < 2) {
+        bot.sendMessage(chatId, "Please specify a period: day, week, or month.");
+        return;
+    }
+
+    const period = args[1].toLowerCase();
+    const now = new Date();
+    let dateFrom;
+
+    switch (period) {
+        case 'day':
+            dateFrom = new Date(now.setDate(now.getDate() - 1));
+            break;
+        case 'week':
+            dateFrom = new Date(now.setDate(now.getDate() - 7));
+            break;
+        case 'month':
+            dateFrom = new Date(now.setMonth(now.getMonth() - 1));
+            break;
+        default:
+            bot.sendMessage(chatId, "Invalid period. Use day, week, or month.");
+            return;
+    }
+
+    const prices = [];
+    for (const [date, dailyPrices] of Object.entries(pricesByDay)) {
+        if (new Date(date) >= dateFrom) {
+            prices.push(...dailyPrices);
+        }
+    }
+
+    if (prices.length > 0) {
+        const maxPrice = Math.max(...prices);
+        const minPrice = Math.min(...prices);
+        bot.sendMessage(chatId, `In the last ${period}, the highest price was $${formatPrice(maxPrice)} and the lowest price was $${formatPrice(minPrice)}.`);
+    } else {
+        bot.sendMessage(chatId, `No price data available for the last ${period}.`);
+    }
+});
+
+// Використання cron для відправки повідомлення кожні 30 хвилин
 const sendJob = new CronJob('*/30 * * * *', sendBitcoinPrice, null, true, 'America/Los_Angeles');
-sendJob.start();``
-
-// // Використання cron для видалення повідомлень кожні 24 години
-// const deleteJob = new CronJob('0 0 * * *', deleteMessages, null, true, 'America/Los_Angeles');
-// deleteJob.start();
+sendJob.start();
 
 console.log('///    bot is working  ///');
-
-
-
-     
