@@ -1,5 +1,5 @@
 node_modules
 package-lock.json
-ubuntu@51.20.112.96
+package.json
 # .dockerignore
-Makefile
+

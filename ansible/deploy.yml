@@ -1,0 +1,19 @@
+- hosts: servers
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Pull Docker image
+      docker_image:
+        name: your-docker-repo/telegram-bot
+        source: pull
+
+    - name: Run Docker container
+      docker_container:
+        name: telegram-bot
+        image: your-docker-repo/telegram-bot
+        state: started
+        restart_policy: always
