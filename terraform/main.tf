@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "bot_instance" {
-  ami           = "ami-0c55b159cbfafe1f0" # Використовуй актуальний AMI для свого регіону
+  ami           = "ami-0e04bcbe83a83792e" # Використовуй актуальний AMI для свого регіону
   instance_type = "t2.micro"
 
   tags = {
