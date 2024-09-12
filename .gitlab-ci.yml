@@ -1,3 +1,7 @@
+variables:
+    IMAGE_NAME: strelchenk0nazar/tgbot_deploy
+    IMAGE_TAG: tgbot_deploy
+
 stages:
   - build
   - deploy
