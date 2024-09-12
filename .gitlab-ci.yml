@@ -4,7 +4,8 @@ variables:
 
 stages:
   - build
-  - deploy
+  - terraform_apply
+  - ansible_deploy
 
 # Етап збірки Docker-образу
 build_docker_image:
@@ -22,7 +23,7 @@ build_docker_image:
 
 # Етап ініціалізації та виконання Terraform
 terraform_apply:
-  stage: deploy
+  stage: terraform_apply
   image: hashicorp/terraform:latest
   script:
     - cd terraform
@@ -37,7 +38,7 @@ terraform_apply:
 
 # Етап розгортання з використанням Ansible
 ansible_deploy:
-  stage: deploy
+  stage: ansible_deploy
   image: williamyeh/ansible:alpine3
   script:
     - cd ansible
