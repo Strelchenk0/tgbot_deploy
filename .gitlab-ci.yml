@@ -24,7 +24,7 @@ build_docker_image:
 # Етап ініціалізації та виконання Terraform
 terraform_apply:
   stage: terraform_apply
-  image: alpine:latest  # Використовуємо Alpine для shell команд
+  image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
   script:
     - apk add bash  # Встановлюємо bash, якщо він не встановлений
     - cd terraform
