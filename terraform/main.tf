@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "us-central-1"
 }
 
 resource "aws_instance" "bot_instance" {
   ami           = "ami-0e04bcbe83a83792e" # Використовуй актуальний AMI для свого регіону
-  instance_type = "t2.micro"
+  instance_type = "t3.micro"
 
   tags = {
     Name = "telegram-bot-instance"

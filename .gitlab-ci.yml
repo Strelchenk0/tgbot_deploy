@@ -1,13 +1,8 @@
-variables:
-    IMAGE_NAME: strelchenk0nazar/tgbot_deploy
-    IMAGE_TAG: tgbot_deploy
-
 stages:
   - build
   - terraform_apply
   - ansible_deploy
 
-# Етап збірки Docker-образу
 build_docker_image:
   stage: build
   image: docker:latest
@@ -21,11 +16,11 @@ build_docker_image:
   only:
     - main
 
-# Етап ініціалізації та виконання Terraform
 terraform_apply:
   stage: terraform_apply
-  image: hashicorp/terraform:latest
+  image: alpine:latest  # Використовуємо Alpine для shell команд
   script:
+    - apk add bash  # Встановлюємо bash, якщо він не встановлений
     - cd terraform
     - terraform init
     - terraform plan
@@ -36,7 +31,6 @@ terraform_apply:
     TF_VAR_aws_access_key_id: $AWS_ACCESS_KEY_ID
     TF_VAR_aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
 
-# Етап розгортання з використанням Ansible
 ansible_deploy:
   stage: ansible_deploy
   image: williamyeh/ansible:alpine3
