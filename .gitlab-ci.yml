@@ -26,6 +26,7 @@ terraform_apply:
   stage: terraform_apply
   image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
   script:
+    - cd ..
     - cd terraform
     - terraform init
     - terraform plan
