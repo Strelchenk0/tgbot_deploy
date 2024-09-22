@@ -52,6 +52,7 @@ terraform_plan:
   stage: terraform_plan
   script: 
     - terraform plan -out "planfile"
+    - ls -la
   dependencies:
     - terraform_validate  
   artifacts:
@@ -62,6 +63,7 @@ terraform_apply:
   stage: terraform_apply
   dependencies:
     - terraform_plan
+    - ls -la
   script: 
     - terraform apply -input=false "planfile"
   when: manual
