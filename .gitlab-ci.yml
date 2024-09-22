@@ -34,8 +34,11 @@ build_docker_image:
     - main
 
 before_script:
+  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  - rm -rf .terraform
   - terraform --version
-  - terraform init 
+  - terraform init
 
 # Етап ініціалізації та виконання Terraform
 terraform_validate:
@@ -49,7 +52,7 @@ terraform_plan:
   dependencies:
     - terraform_validate
   script: 
-    - terraform plan #-out="planfile"
+    - terraform plan -out "planfile"
   artifacts:
     paths:
       - planfile
