@@ -57,7 +57,7 @@ terraform_plan:
     - terraform_validate  
   artifacts:
     paths:
-      - planfile
+      - terraform/planfile
 
 terraform_apply: 
   stage: terraform_apply
