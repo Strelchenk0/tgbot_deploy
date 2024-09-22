@@ -49,6 +49,7 @@ terraform_plan:
   dependencies:
     - terraform_validate
   script: 
+    - cd terraform
     - terraform plan -out="planfile"
   artifacts:
     paths:
