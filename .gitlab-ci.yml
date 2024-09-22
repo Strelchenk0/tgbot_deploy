@@ -63,7 +63,7 @@ terraform_apply:
   dependencies:
     - terraform_plan
   script: 
-    - terraform apply -input=fulse "planfile"
+    - terraform apply -input=false "planfile"
   when: manual
 
 terraform_destroy:
