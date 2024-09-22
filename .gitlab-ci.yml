@@ -41,7 +41,7 @@ terraform_validate:
 terraform_plan:
   stage: terraform_plan
   dependencies:
-    - validate
+    - terraform_validate
   script: 
     - terraform plan -out="planfile"
   artifacts:
