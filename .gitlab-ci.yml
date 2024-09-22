@@ -12,7 +12,7 @@ variables:
     AWS_DEFAULT_REGION: "us-east-1"
 
 stages:
-  - build_docker_image
+  # - build_docker_image
   - terraform_validate
   - terraform_plan
   - terraform_apply
@@ -20,18 +20,18 @@ stages:
   # - ansible_deploy
 
 # Етап збірки Docker-образу
-build_docker_image:
-  stage: build_docker_image
-  image: docker:latest
-  services:
-    - docker:20.10.16-dind
-  before_script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-  script:
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-    - docker push $IMAGE_NAME:$IMAGE_TAG
-  only:
-    - main
+# build_docker_image:
+#   stage: build_docker_image
+#   image: docker:latest
+#   services:
+#     - docker:20.10.16-dind
+#   before_script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+#   script:
+#     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+#     - docker push $IMAGE_NAME:$IMAGE_TAG
+#   only:
+#     - main
 
 before_script:
   - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
@@ -46,13 +46,11 @@ terraform_validate:
   stage: terraform_validate
   # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
   script:
-    - cd terraform
     - terraform validate
 
 terraform_plan:
   stage: terraform_plan
   script: 
-    - cd terraform
     - terraform plan -out "planfile"
   dependencies:
     - terraform_validate  
@@ -65,14 +63,12 @@ terraform_apply:
   dependencies:
     - terraform_plan
   script: 
-    - cd terraform
     - terraform apply --input=fulse "planfile"
   when: manual
 
 terraform_destroy:
   stage: terraform_destroy
   script: 
-  - cd terraform
   - terraform destroy -auto-approve
   when: manual
 
