@@ -63,8 +63,8 @@ terraform_apply:
   stage: terraform_apply
   dependencies:
     - terraform_plan
-    - ls -la
   script: 
+    - ls -la
     - terraform apply -input=false "planfile"
   when: manual
 
