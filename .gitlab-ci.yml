@@ -1,15 +1,21 @@
 variables:
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
+    AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
+    AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    AWS_DEFAULT_REGION: "us-east-1"
 
 stages:
-  - build
+  - build_docker_image
+  - terraform_validate
+  - terraform_plan
   - terraform_apply
-  - ansible_deploy
+  - terraform_destroy
+  # - ansible_deploy
 
 # Етап збірки Docker-образу
 build_docker_image:
-  stage: build
+  stage: build_docker_image
   image: docker:latest
   services:
     - docker:20.10.16-dind
@@ -21,30 +27,58 @@ build_docker_image:
   only:
     - main
 
+before_script:
+  - terraform --version
+  - terraform init 
+
 # Етап ініціалізації та виконання Terraform
-terraform_apply:
-  stage: terraform_apply
-  image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
+terraform_validate:
+  stage: terraform_validate
+  # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
   script:
-    - cd ..
-    - cd terraform
-    - terraform init
-    - terraform plan
-    - terraform apply -auto-approve
-  only:
-    - main
-  variables:
-    TF_VAR_aws_access_key_id: $AWS_ACCESS_KEY_ID
-    TF_VAR_aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+    - terraform validate
+
+terraform_plan:
+  stage: terraform_plan
+  dependencies:
+    - validate
+  script: 
+    - terraform plan -out="planfile"
+  artifacts:
+    paths:
+      - planfile
+
+terraform_apply: 
+  stage: terraform_apply
+  dependencies:
+    - terraform_plan
+  script: 
+    - terraform apply --input=fulse "planfile"
+  when: manual
+
+terraform_destroy:
+  stage: terraform_destroy
+  script: 
+  - terraform destroy -auto-approve
+  when: manual
+
+
+
+
+  # only:
+  #   - main
+  # variables:
+  #   TF_VAR_aws_access_key_id: $AWS_ACCESS_KEY_ID
+  #   TF_VAR_aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
 
 # Етап розгортання з використанням Ansible
-ansible_deploy:
-  stage: ansible_deploy
-  image: williamyeh/ansible:alpine3
-  script:
-    - cd ansible
-    - ansible-playbook -i inventory.ini deploy.yml
-  only:
-    - main
-  variables:
-    ANSIBLE_HOST_KEY_CHECKING: "False"
+# ansible_deploy:
+#   stage: ansible_deploy
+#   image: williamyeh/ansible:alpine3
+#   script:
+#     - cd ansible
+#     - ansible-playbook -i inventory.ini deploy.yml
+#   only:
+#     - main
+#   variables:
+#     ANSIBLE_HOST_KEY_CHECKING: "False"
