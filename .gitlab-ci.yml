@@ -45,14 +45,16 @@ terraform_validate:
   stage: terraform_validate
   # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
   script:
+    - cd terraform
     - terraform validate
 
 terraform_plan:
   stage: terraform_plan
-  dependencies:
-    - terraform_validate
   script: 
+    - cd terraform
     - terraform plan -out "planfile"
+  dependencies:
+    - terraform_validate  
   artifacts:
     paths:
       - planfile
@@ -62,12 +64,14 @@ terraform_apply:
   dependencies:
     - terraform_plan
   script: 
+    - cd terraform
     - terraform apply --input=fulse "planfile"
   when: manual
 
 terraform_destroy:
   stage: terraform_destroy
   script: 
+  - cd terraform
   - terraform destroy -auto-approve
   when: manual
 
