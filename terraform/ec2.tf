@@ -1,19 +1,17 @@
 
 
 resource "aws_instance" "bot_instance" {
-  count = 3
   ami           = var.ami      # Використовуй актуальний AMI для свого регіону
   instance_type = var.instance_trafic_size
 
   tags = {
-    Name = "telegram_bot_instance${count.index+1}"
+    Name = "telegram_bot_instance"
   }
 }
   
 resource "aws_eip" "elastic_ip" {
-  count = 3
   vpc = true
-  instance = aws_instance.bot_instance[count.index].id 
+  instance = aws_instance.bot_instance.id 
 }
 
 resource "aws_s3_bucket" "example" {

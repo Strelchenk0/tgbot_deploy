@@ -74,15 +74,6 @@ terraform_destroy:
   - terraform destroy -auto-approve
   when: manual
 
-
-
-
-  # only:
-  #   - main
-  # variables:
-  #   TF_VAR_aws_access_key_id: $AWS_ACCESS_KEY_ID
-  #   TF_VAR_aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
-
 # Етап розгортання з використанням Ansible
 # ansible_deploy:
 #   stage: ansible_deploy
