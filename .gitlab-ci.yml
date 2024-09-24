@@ -30,8 +30,7 @@ build_docker_image:
   script:
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker push $IMAGE_NAME:$IMAGE_TAG
-  only:
-    - main
+
 
 before_script:
   - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
