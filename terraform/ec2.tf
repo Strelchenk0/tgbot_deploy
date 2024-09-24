@@ -23,11 +23,10 @@ resource "aws_s3_bucket" "example" {
   }
   depends_on = [aws_instance.bot_instance]
 }
-/////
 
-# Відкриваємо порт 22 для SSH і порт 80 для HTTP
-#   vpc_security_group_ids = [aws_security_group.instance.id]
-# }
+output "instance_ip" {
+  value = aws_instance.bot_instance.public_ip
+}
 
 resource "aws_security_group" "instance" {
   name        = "allow_ssh_http"

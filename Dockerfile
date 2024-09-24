@@ -1,17 +1,17 @@
-# Використовуємо базовий образ Node.js
-FROM node:14
+FROM node
 
-# Встановлюємо робочу директорію
-WORKDIR /usr/src/app
+# Set working directory inside the container
+WORKDIR /app
 
-# Копіюємо package.json і package-lock.json для встановлення залежностей
-COPY package*.json ./
+# Copy package.json and package-lock.json (if exists)
+COPY package.json /app
 
-# Встановлюємо залежності
-RUN npm install --production
+# Install dependencies
+RUN npm install
 
-# Копіюємо весь код у робочу директорію
+# Copy the rest of the application code
 COPY . .
 
-# Вказуємо команду для запуску бота
+# Command to run your application
 CMD ["node", "bot.mjs"]
+
