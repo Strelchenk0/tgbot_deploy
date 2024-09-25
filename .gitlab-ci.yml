@@ -85,7 +85,7 @@ run_ansible:
     ANSIBLE_HOST_KEY_CHECKING: "False"
 
 terraform_destroy:
-  stage: terraform_destroy
+  stage: run_ansible
   script: 
   - terraform destroy -auto-approve
   when: manual
