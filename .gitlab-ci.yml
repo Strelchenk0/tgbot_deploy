@@ -32,13 +32,13 @@ build_docker_image:
     - docker push $IMAGE_NAME:$IMAGE_TAG
 
 
-before_script:
-  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
-  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-  - cd terraform
-  - rm -rf .terraform
-  - terraform --version
-  - terraform init
+# before_script:
+#   - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+#   - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#   - cd terraform
+#   - rm -rf .terraform
+#   - terraform --version
+#   - terraform init
 
 # Етап ініціалізації та виконання Terraform
 terraform_validate:
