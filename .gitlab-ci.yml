@@ -85,6 +85,7 @@ run_ansible:
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml
   variables:
     ANSIBLE_HOST_KEY_CHECKING: "False"
+  when: manual  
 
 terraform_destroy:
   stage: terraform_destroy
