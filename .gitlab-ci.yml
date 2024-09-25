@@ -13,11 +13,11 @@ variables:
 
 stages:
   - build_docker_image
-  # - terraform_validate
-  # - terraform_plan
-  # - terraform_apply
-  # - terraform_destroy
-  # - ansible_deploy
+  - terraform_validate
+  - terraform_plan
+  - terraform_apply
+  - run_ansible
+  - terraform_destroy
 
 # Етап збірки Docker-образу
 build_docker_image:
@@ -32,55 +32,61 @@ build_docker_image:
     - docker push $IMAGE_NAME:$IMAGE_TAG
 
 
-# before_script:
-#   - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
-#   - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-#   - cd terraform
-#   - rm -rf .terraform
-#   - terraform --version
-#   - terraform init
+before_script:
+  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  - cd terraform
+  - rm -rf .terraform
+  - terraform --version
+  - terraform init
 
-# # Етап ініціалізації та виконання Terraform
-# terraform_validate:
-#   stage: terraform_validate
-#   # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
-#   script:
-#     - terraform validate
+# Етап ініціалізації та виконання Terraform
+terraform_validate:
+  stage: terraform_validate
+  # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
+  script:
+    - terraform validate
 
-# terraform_plan:
-#   stage: terraform_plan
-#   script: 
-#     - terraform plan -out "planfile"
-#     - ls -la
-#   dependencies:
-#     - terraform_validate  
-#   artifacts:
-#     paths:
-#       - terraform/planfile
+terraform_plan:
+  stage: terraform_plan
+  script: 
+    - terraform plan -out "planfile"
+    - ls -la
+  dependencies:
+    - terraform_validate  
+  artifacts:
+    paths:
+      - terraform/planfile
 
-# terraform_apply: 
-#   stage: terraform_apply
-#   dependencies:
-#     - terraform_plan
-#   script: 
-#     - ls -la
-#     - terraform apply -input=false "planfile"
-#   when: manual
+terraform_apply: 
+  stage: terraform_apply
+  dependencies:
+    - terraform_plan
+  script: 
+    - ls -la
+    - terraform apply -input=false "planfile"
+    - export EC2_IP=$(terraform output -raw ec2_elastic_ip)  #
+    - echo $EC2_IP > ec2_ip.txt #
+  artifacts: #
+    paths: #
+      - ec2_ip.txt #
+  when: manual
 
-# terraform_destroy:
-#   stage: terraform_destroy
-#   script: 
-#   - terraform destroy -auto-approve
-#   when: manual
 
-# Етап розгортання з використанням Ansible
-# ansible_deploy:
-#   stage: ansible_deploy
-#   image: williamyeh/ansible:alpine3
-#   script:
-#     - cd ansible
-#     - ansible-playbook -i inventory.ini deploy.yml
-#   only:
-#     - main
-#   variables:
-#     ANSIBLE_HOST_KEY_CHECKING: "False"
+run_ansible:
+  stage: ansible_deploy
+  image: williamyeh/ansible:alpine3
+  script:
+    - export EC2_IP=$(cat ec2_ip.txt)
+    - echo "[webserver]" > inventory
+    - echo $EC2_IP >> inventory
+    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml
+  variables:
+    ANSIBLE_HOST_KEY_CHECKING: "False"
+
+terraform_destroy:
+  stage: terraform_destroy
+  script: 
+  - terraform destroy -auto-approve
+  when: manual
+
