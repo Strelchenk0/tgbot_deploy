@@ -74,7 +74,7 @@ terraform_apply:
 
 
 run_ansible:
-  stage: ansible_deploy
+  stage: run_ansible
   image: williamyeh/ansible:alpine3
   script:
     - export EC2_IP=$(cat ec2_ip.txt)
@@ -85,7 +85,7 @@ run_ansible:
     ANSIBLE_HOST_KEY_CHECKING: "False"
 
 terraform_destroy:
-  stage: run_ansible
+  stage: terraform_destroy
   script: 
   - terraform destroy -auto-approve
   when: manual
