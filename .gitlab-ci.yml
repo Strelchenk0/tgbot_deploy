@@ -64,11 +64,6 @@ terraform_apply:
   script: 
     - ls -la
     - terraform apply -input=false "planfile"
-    - export EC2_IP=$(terraform output -raw ec2_elastic_ip)  #
-    - echo $EC2_IP > ec2_ip.txt #
-  artifacts: #
-    paths: #
-      - ec2_ip.txt #
   when: manual
 
 
@@ -78,9 +73,6 @@ run_ansible:
     - terraform_apply
   image: williamyeh/ansible:alpine3
   script:
-    - export EC2_IP=$(cat ec2_ip.txt)
-    - echo "[webserver]" > inventory
-    - echo $EC2_IP >> inventory
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml
   variables:
     ANSIBLE_HOST_KEY_CHECKING: "False"
