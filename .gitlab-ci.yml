@@ -13,10 +13,10 @@ variables:
 
 stages:
   - build_docker_image
-  - terraform_validate
-  - terraform_plan
-  - terraform_apply
-  - terraform_destroy
+  # - terraform_validate
+  # - terraform_plan
+  # - terraform_apply
+  # - terraform_destroy
   # - ansible_deploy
 
 # Етап збірки Docker-образу
@@ -32,46 +32,46 @@ build_docker_image:
     - docker push $IMAGE_NAME:$IMAGE_TAG
 
 
-before_script:
-  - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
-  - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-  - cd terraform
-  - rm -rf .terraform
-  - terraform --version
-  - terraform init
+# before_script:
+#   - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+#   - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#   - cd terraform
+#   - rm -rf .terraform
+#   - terraform --version
+#   - terraform init
 
-# Етап ініціалізації та виконання Terraform
-terraform_validate:
-  stage: terraform_validate
-  # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
-  script:
-    - terraform validate
+# # Етап ініціалізації та виконання Terraform
+# terraform_validate:
+#   stage: terraform_validate
+#   # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
+#   script:
+#     - terraform validate
 
-terraform_plan:
-  stage: terraform_plan
-  script: 
-    - terraform plan -out "planfile"
-    - ls -la
-  dependencies:
-    - terraform_validate  
-  artifacts:
-    paths:
-      - terraform/planfile
+# terraform_plan:
+#   stage: terraform_plan
+#   script: 
+#     - terraform plan -out "planfile"
+#     - ls -la
+#   dependencies:
+#     - terraform_validate  
+#   artifacts:
+#     paths:
+#       - terraform/planfile
 
-terraform_apply: 
-  stage: terraform_apply
-  dependencies:
-    - terraform_plan
-  script: 
-    - ls -la
-    - terraform apply -input=false "planfile"
-  when: manual
+# terraform_apply: 
+#   stage: terraform_apply
+#   dependencies:
+#     - terraform_plan
+#   script: 
+#     - ls -la
+#     - terraform apply -input=false "planfile"
+#   when: manual
 
-terraform_destroy:
-  stage: terraform_destroy
-  script: 
-  - terraform destroy -auto-approve
-  when: manual
+# terraform_destroy:
+#   stage: terraform_destroy
+#   script: 
+#   - terraform destroy -auto-approve
+#   when: manual
 
 # Етап розгортання з використанням Ansible
 # ansible_deploy:
