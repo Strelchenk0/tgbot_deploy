@@ -57,7 +57,6 @@ terraform_validate:
 terraform_plan:
   stage: terraform_plan
   script: 
-    - cd terraform
     - terraform plan -out "planfile"
     - ls -la
   dependencies:
