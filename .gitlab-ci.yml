@@ -42,8 +42,8 @@ before_script:
 
 # Етап ініціалізації та виконання Terraform
 terraform_validate:
-  # image: hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
-  script:
+   stage: terraform_validate #hashicorp/terraform:latest  # Використовуємо Alpine для shell команд
+   script:
     - terraform validate
 
 terraform_plan:
