@@ -1,4 +1,9 @@
-image: hashicorp/terraform:1.9.5
+image:
+  name: hashicorp/terraform:1.9.5
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
 
 variables:
   IMAGE_NAME: strelchenk0nazar/tgbot_deploy
