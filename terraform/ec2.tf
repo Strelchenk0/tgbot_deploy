@@ -10,7 +10,7 @@ resource "aws_instance" "bot_instance" {
 }
   
 resource "aws_eip" "elastic_ip" {
-  vpc = true
+  domain   = "vpc
   instance = aws_instance.bot_instance.id 
 }
 
