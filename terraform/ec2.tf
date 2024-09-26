@@ -14,15 +14,15 @@ resource "aws_eip" "elastic_ip" {
   instance = aws_instance.bot_instance.id 
 }
 
-resource "aws_s3_bucket" "example" {
-  bucket = "nazarsbucket"
+# resource "aws_s3_bucket" "example" {
+#   bucket = "nazarsbucket"
 
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
-  }
-  depends_on = [aws_instance.bot_instance]
-}
+#   tags = {
+#     Name        = "My bucket"
+#     Environment = "Dev"
+#   }
+#   depends_on = [aws_instance.bot_instance]
+# }
 
 output "instance_ip" {
   value = aws_instance.bot_instance.public_ip
