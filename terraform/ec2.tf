@@ -10,19 +10,9 @@ resource "aws_instance" "bot_instance" {
 }
   
 resource "aws_eip" "elastic_ip" {
-  domain   = "vpc
+  domain   = "vpc"
   instance = aws_instance.bot_instance.id 
 }
-
-# resource "aws_s3_bucket" "example" {
-#   bucket = "nazarsbucket"
-
-#   tags = {
-#     Name        = "My bucket"
-#     Environment = "Dev"
-#   }
-#   depends_on = [aws_instance.bot_instance]
-# }
 
 output "instance_ip" {
   value = aws_instance.bot_instance.public_ip
