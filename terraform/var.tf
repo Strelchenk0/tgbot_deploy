@@ -11,7 +11,7 @@ variable "ami" {
 }
 
 variable "public_path" {
-  default = "../lnKeyPair2.pem"
+  default = "../my_new_key.pub"
 }
 
 
