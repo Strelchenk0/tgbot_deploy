@@ -3,7 +3,7 @@
 resource "aws_instance" "bot_instance" {
   ami           = var.ami      # Використовуй актуальний AMI для свого регіону
   instance_type = var.instance_trafic_size
-  key_name = aws_key_pair.app_keypair
+  key_name      = aws_key_pair.app_keypair.key_name  # Виправлено на ключове ім'я
 
   tags = {
     Name = "telegram_bot"
