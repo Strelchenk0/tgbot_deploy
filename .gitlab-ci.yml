@@ -45,8 +45,8 @@ stages:
 # Застосування Terraform
 terraform_apply:
   stage: terraform_apply
-  dependencies:
-    - terraform_plan
+  # dependencies:
+  #   - terraform_plan
   script:
     - cd terraform
     - rm -rf .terraform  # Очистка кешу Terraform
