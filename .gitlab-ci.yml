@@ -64,7 +64,7 @@ run_ansible:
     - terraform_apply
   image: williamyeh/ansible:alpine3
   script:
-    - ansible-galaxy collection install community.docker
+    - ansible-galaxy collection install -r requirements.yml
     - chmod 600 my_new_key.pem
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml
   variables:
