@@ -76,5 +76,7 @@ terraform_destroy:
   stage: terraform_destroy
   script:
     - cd terraform
+    - terraform init  # Додайте цей рядок
     - terraform destroy -auto-approve
   when: manual
+
