@@ -1,6 +1,6 @@
 ---
 - name: Deploy Docker container
-  hosts: all
+  hosts: my_servers
   become: yes
   vars:
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
