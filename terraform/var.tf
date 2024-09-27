@@ -10,3 +10,8 @@ variable "ami" {
   description = "instance ami"
 }
 
+variable "public_path" {
+  default = "../lnKeyPair2.pem"
+}
+
+

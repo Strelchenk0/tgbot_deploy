@@ -4,7 +4,6 @@ image:
     - '/usr/bin/env'
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
-
 variables:
   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
@@ -50,7 +49,13 @@ terraform_apply:
   script:
     - cd terraform
     - terraform apply -input=false "planfile"
+    - echo "Saving elastic-ip from terraform output"
+    - export ELASTIC_IP=$(terraform output -raw elastic_ip)  # Отримати значення elastic-ip
+    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env      # Зберегти в .env файл
   when: manual
+  artifacts:
+    paths:
+      - terraform.env  # Додано для збереження артефакту з elastic IP
 
 # Запуск Ansible Playbook
 run_ansible:
@@ -59,7 +64,9 @@ run_ansible:
     - terraform_apply
   image: williamyeh/ansible:alpine3
   script:
-    - ansible-playbook --inventory ansible/inventory/hosts.ini ansible/vm-setup-playbook.yml
+    - echo "Using elastic-ip in Ansible"
+    - source terraform.env                               # Завантажити змінні з terraform.env
+    - ansible-playbook --inventory ansible/inventory/hosts.ini ansible/vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"  # Передача elastic_ip
   variables:
     ANSIBLE_HOST_KEY_CHECKING: "False"
   when: manual
