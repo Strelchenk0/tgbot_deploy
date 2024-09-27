@@ -1,11 +1,15 @@
 ---
 - name: Deploy Docker container
-  hosts: my_servers
+  hosts: all
   become: yes
   vars:
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
+    - name: Install Ansible collections
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install community.docker
+
     - name: Ensure Docker is installed
       apt:
         name: docker.io
