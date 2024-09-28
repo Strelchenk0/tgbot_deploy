@@ -1,19 +1,11 @@
 ---
 - name: Deploy Docker container
-  hosts: my_servers
+  hosts: webservers
   become: yes
   vars:
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
-    - name: Add server to known hosts
-      add_host:
-        name: "{{ inventory_hostname }}"
-        ansible_host: "{{ ELASTIC_IP }}"
-    
-    - name: Print Elastic IP
-      debug:
-        msg: "Elastic IP is {{ ELASTIC_IP }}"
 
     - name: Ensure Docker is installed
       apt:
