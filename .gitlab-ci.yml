@@ -68,11 +68,11 @@ terraform_apply:
 run_ansible:
   stage: run_ansible
   image: python:3.8
-  before_script:
-    - pip install --upgrade pip
-    - pip install ansible
-    - ansible --version
-    - ansible-galaxy collection install community.docker
+  # before_script:
+  #   - pip install --upgrade pip
+  #   - pip install ansible
+  #   - ansible --version
+  #   - ansible-galaxy collection install community.docker
   script:
     - ansible --version
     - ansible-playbook --syntax-check vm-setup-playbook.yml
