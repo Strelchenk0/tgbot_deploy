@@ -1,4 +1,3 @@
----
 - name: Deploy Docker container
   hosts: all
   become: yes
@@ -7,8 +6,7 @@
     IMAGE_TAG: tgbot_deploy
   tasks:
     - name: Install Ansible collections
-      ansible.builtin.command:
-        cmd: ansible-galaxy collection install community.docker
+      command: ansible-galaxy collection install community.docker
 
     - name: Ensure Docker is installed
       apt:
@@ -37,5 +35,3 @@
         state: started
         ports:
           - "80:80"
-        volumes:
-          - /host/path:/container/path
