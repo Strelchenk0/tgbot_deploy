@@ -24,10 +24,10 @@
         state: present
         update_cache: yes
 
-    - name: Install Ansible collections
-      ansible.builtin.command: ansible-galaxy collection install community.docker
-      register: install_collections
-      changed_when: install_collections.rc == 0
+    # - name: Install Ansible collections
+    #   ansible.builtin.command: ansible-galaxy collection install community.docker
+    #   register: install_collections
+    #   changed_when: install_collections.rc == 0
 
     - name: Ensure Docker service is running
       service:
