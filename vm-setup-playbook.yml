@@ -1,19 +1,20 @@
-  hosts: all
+---
+- hosts: all
   become: yes
   vars:
     image_name: strelchenk0nazar/tgbot_deploy
     image_tag: tgbot_deploy
     container_name: tgbot_deploy
     docker_package: docker.io
-    elastic_ip: "{{ lookup('env', 'ELASTIC_IP') }}"  # Змінна для еластичного IP
+    elastic_ip: "{{ lookup('env', 'ELASTIC_IP') }}"  # Environment variable for Elastic IP
 
   tasks:
     - name: Generate inventory file
       template:
-        src: hosts.ini.j2  # Шаблон для hosts.ini
+        src: hosts.ini.j2  # Template for hosts.ini
         dest: ansible/inventory/hosts.ini
       vars:
-        elastic_ip: "{{ elastic_ip }}"  # Передача еластичного IP у шаблон
+        elastic_ip: "{{ elastic_ip }}"  # Pass elastic_ip to the template
 
     - name: Install required packages
       apt:
