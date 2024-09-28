@@ -76,12 +76,10 @@ setup_environment:
 # Запуск Ansible Playbook
 run_ansible:
   stage: run_ansible
-  image: williamyeh/ansible:alpine3
+  image: python:3.8
   script:
     - ansible-playbook --syntax-check vm-setup-playbook.yml
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
-  variables:
-    ANSIBLE_HOST_KEY_CHECKING: "False"
   dependencies:
     - terraform_apply
   when: manual
