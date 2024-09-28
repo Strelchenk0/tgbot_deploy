@@ -66,8 +66,7 @@ run_ansible:
   stage: run_ansible
   image: williamyeh/ansible:alpine3
   script:
-    - ansible-galaxy collection install -r requirements.yml
-    - chmod 600 my_new_key.pem
+    - ansible-galaxy collection install community.docker
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   variables:
     ANSIBLE_HOST_KEY_CHECKING: "False"
