@@ -9,11 +9,11 @@
     - name: Add server to known hosts
       add_host:
         name: "{{ inventory_hostname }}"
-        ansible_host: "{{ elastic_ip }}"
+        ansible_host: "{{ ELASTIC_IP }}"
     
     - name: Print Elastic IP
       debug:
-        msg: "Elastic IP is {{ elastic_ip }}"
+        msg: "Elastic IP is {{ ELASTIC_IP }}"
 
     - name: Ensure Docker is installed
       apt:
