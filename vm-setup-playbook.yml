@@ -6,6 +6,11 @@
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
+    - name: Add server to known hosts
+      add_host:
+        name: "{{ inventory_hostname }}"
+        ansible_host: "{{ elastic_ip }}"
+    
     - name: Print Elastic IP
       debug:
         msg: "Elastic IP is {{ elastic_ip }}"
