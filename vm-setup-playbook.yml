@@ -6,6 +6,10 @@
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
+    - name: Print Elastic IP
+      debug:
+        msg: "Elastic IP is {{ elastic_ip }}"
+
     - name: Ensure Docker is installed
       apt:
         name: docker.io
