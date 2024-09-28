@@ -2,7 +2,7 @@ node_modules
 package-lock.json
 # .dockerignore
 # Ігнорування приватних ключів
-*.pem
+
 
 # Local .terraform directories
 **/.terraform/*
