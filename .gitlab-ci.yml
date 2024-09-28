@@ -55,7 +55,10 @@ terraform_apply:
     - terraform apply -input=false "planfile"
     - echo "Saving elastic-ip from terraform output"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)  # Отримати значення elastic-ip
-    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env      # Зберегти в .env файл
+    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env  
+  artifacts:
+    paths:
+      - terraform/terraform.tfstate    # Зберегти в .env файл
   when: manual
 
 # Запуск Ansible Playbook
@@ -75,12 +78,10 @@ run_ansible:
 # Знищення інфраструктури
 terraform_destroy:
   stage: terraform_destroy
+  dependencies:
+    - terraform_apply
   script:
     - cd terraform
-    - terraform init  # Додайте цей рядок
     - terraform destroy -auto-approve
-  artifacts:
-    paths:
-      - terraform/terraform.tfstate
   when: manual
 
