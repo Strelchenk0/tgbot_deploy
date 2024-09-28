@@ -25,7 +25,7 @@
         update_cache: yes
 
     - name: Install Ansible collections
-      ansible.builtin.command: ansible-galaxy collection install community.docker
+      shell: ansible-galaxy collection install community.docker
       register: install_collections
       changed_when: install_collections.rc == 0
 
@@ -50,12 +50,3 @@
       community.docker.docker_container:
         name: "{{ container_name }}"
         state: absent
-
-    - name: Run Docker container
-      community.docker.docker_container:
-        name: "{{ container_name }}"
-        image: "{{ image_name }}:{{ image_tag }}"
-        state: started
-        ports:
-          - "80:80"
-        restart_policy: always
