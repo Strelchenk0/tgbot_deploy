@@ -64,9 +64,10 @@ terraform_apply:
 # Запуск Ansible Playbook
 run_ansible:
   stage: run_ansible
-  image: williamyeh/ansible:alpine3
+  image: ansible/ansible:latest
   script:
-    - ansible-galaxy collection install community.docker
+    - ansible-galaxy collection install community.docker --ignore-errors
+    - ansible-playbook --syntax-check vm-setup-playbook.yml
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   variables:
     ANSIBLE_HOST_KEY_CHECKING: "False"
