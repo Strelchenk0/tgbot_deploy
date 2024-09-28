@@ -15,7 +15,6 @@ stages:
   # - build_docker_image
   - terraform_plan
   - terraform_apply
-  - setup_ansible
   - run_ansible
   - terraform_destroy
 
@@ -65,20 +64,15 @@ terraform_apply:
       - terraform/terraform.tfstate   # Зберегти в артефакти як змінну середовища    # Зберегти в .env файл
   when: manual
 
-setup_environment:
-  stage: setup_ansible
-  image: python:3.8   # або інша версія Python
-  script:
-    - pip install --upgrade pip
-    - pip install ansible
-    - ansible --version
-    - ansible-galaxy collection install community.docker
-  when: manual
-
 # Запуск Ansible Playbook
 run_ansible:
   stage: run_ansible
   image: python:3.8
+  before_script:
+    - pip install --upgrade pip
+    - pip install ansible
+    - ansible --version
+    - ansible-galaxy collection install community.docker
   script:
     - ansible --version
     - ansible-playbook --syntax-check vm-setup-playbook.yml
