@@ -71,7 +71,7 @@ setup_environment:
   script:
     - pip install ansible
     - ansible-galaxy collection install community.docker
-
+  when: manual
 
 # Запуск Ansible Playbook
 run_ansible:
