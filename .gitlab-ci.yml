@@ -67,17 +67,18 @@ terraform_apply:
 
 setup_environment:
   stage: setup_ansible
-  image: python:3.8  # або інша версія Python
+  image: ansible/ansible:latest   # або інша версія Python
   script:
     - pip install --upgrade pip
     - pip install ansible
+    - ansible --version
     - ansible-galaxy collection install community.docker
   when: manual
 
 # Запуск Ansible Playbook
 run_ansible:
   stage: run_ansible
-  image: python:3.8
+  image: ansible/ansible:latest 
   script:
     - ansible --version
     - ansible-playbook --syntax-check vm-setup-playbook.yml
