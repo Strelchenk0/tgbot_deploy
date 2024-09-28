@@ -1,39 +1,15 @@
 ---
-- hosts: all
+- name: Deploy Docker container
+  hosts: all
   become: yes
   vars:
-    image_name: strelchenk0nazar/tgbot_deploy
-    image_tag: tgbot_deploy
-    container_name: tgbot_deploy
-    docker_package: docker.io
-    elastic_ip: "{{ lookup('env', 'ELASTIC_IP') }}"  # Environment variable for Elastic IP
-
+    IMAGE_NAME: strelchenk0nazar/tgbot_deploy
+    IMAGE_TAG: tgbot_deploy
   tasks:
-    - name: Generate inventory file
-      template:
-        src: hosts.ini.j2  # Template for hosts.ini
-        dest: ansible/inventory/hosts.ini
-      vars:
-        elastic_ip: "{{ elastic_ip }}"  # Pass elastic_ip to the template
-
-    - name: Install required packages
+    - name: Ensure Docker is installed
       apt:
-        name: 
-          - "{{ docker_package }}"
-          - python3-pip
+        name: docker.io
         state: present
-        update_cache: yes
-
-    # - name: Install Ansible collections
-    #   shell: ansible-galaxy collection install community.docker
-    #   register: install_collections
-    #   changed_when: install_collections.rc == 0
-
-    - name: Ensure Docker service is running
-      service:
-        name: docker
-        state: started
-        enabled: yes
 
     - name: Log in to Docker Hub
       community.docker.docker_login:
@@ -42,11 +18,20 @@
 
     - name: Pull Docker image from repository
       community.docker.docker_image:
-        name: "{{ image_name }}"
-        tag: "{{ image_tag }}"
+        name: "{{ IMAGE_NAME }}:{{ IMAGE_TAG }}"
         source: pull
 
     - name: Stop and remove existing container if any
       community.docker.docker_container:
-        name: "{{ container_name }}"
+        name: tgbot_deploy
         state: absent
+
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: tgbot_deploy
+        image: "{{ IMAGE_NAME }}:{{ IMAGE_TAG }}"
+        state: started
+        ports:
+          - "80:80"
+        volumes:
+          - /host/path:/container/path
