@@ -59,7 +59,9 @@ terraform_apply:
   artifacts:
     expire_in: 1 hour
     reports:
-      dotenv: terraform.env  # Зберегти в артефакти як змінну середовища    # Зберегти в .env файл
+      dotenv: terraform.env 
+    paths:
+      - terraform/terraform.tfstate   # Зберегти в артефакти як змінну середовища    # Зберегти в .env файл
   when: manual
 
 # Запуск Ansible Playbook
