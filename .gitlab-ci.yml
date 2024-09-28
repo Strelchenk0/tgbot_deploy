@@ -12,22 +12,22 @@ variables:
   AWS_DEFAULT_REGION: "us-east-1"
 
 stages:
-  - build_docker_image
+  # - build_docker_image
   - terraform_plan
   - terraform_apply
   - run_ansible
   - terraform_destroy
 
 # Етап збірки Docker-образу
-build_docker_image:
-  stage: build_docker_image
-  image: docker:latest
-  services:
-    - docker:20.10.16-dind
-  script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-    - docker push $IMAGE_NAME:$IMAGE_TAG
+# build_docker_image:
+#   stage: build_docker_image
+#   image: docker:latest
+#   services:
+#     - docker:20.10.16-dind
+#   script:
+#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+#     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+#     - docker push $IMAGE_NAME:$IMAGE_TAG
 
 # Ініціалізація та перевірка Terraform
 terraform_plan:
