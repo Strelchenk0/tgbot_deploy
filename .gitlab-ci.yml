@@ -67,7 +67,7 @@ terraform_apply:
 
 setup_environment:
   stage: setup_ansible
-  image: ansible/ansible:latest   # або інша версія Python
+  image: ansible/ansible-runner:latest    # або інша версія Python
   script:
     - pip install --upgrade pip
     - pip install ansible
@@ -78,7 +78,7 @@ setup_environment:
 # Запуск Ansible Playbook
 run_ansible:
   stage: run_ansible
-  image: ansible/ansible:latest 
+  image: ansible/ansible-runner:latest
   script:
     - ansible --version
     - ansible-playbook --syntax-check vm-setup-playbook.yml
