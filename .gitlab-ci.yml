@@ -69,6 +69,7 @@ setup_environment:
   stage: setup_ansible
   image: python:3.8  # або інша версія Python
   script:
+    - pip install --upgrade pip
     - pip install ansible
     - ansible-galaxy collection install community.docker
   when: manual
@@ -78,6 +79,7 @@ run_ansible:
   stage: run_ansible
   image: python:3.8
   script:
+    - ansible --version
     - ansible-playbook --syntax-check vm-setup-playbook.yml
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   dependencies:
