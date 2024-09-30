@@ -78,9 +78,14 @@ run_ansible:
     - ansible --version
     - ansible-galaxy collection install community.docker
   script:
-    - ansible --version
+    - echo "Elastic IP:${ELASTIC_IP}"
+    # Оновлення hosts.ini з динамічною IP-адресою
+    - echo "[webservers]" > ansible/inventory/hosts.ini
+    - echo "elastic_host ansible_host=${ELASTIC_IP} ansible_user=ubuntu ansible_ssh_private_key_file=../../my_new_key.pem" >> ansible/inventory/hosts.ini
+    # Перевірка синтаксису playbook
     - ansible-playbook --syntax-check vm-setup-playbook.yml
-    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
+    # Запуск playbook з оновленим інвентарем
+    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml
   dependencies:
     - terraform_apply
   when: manual
