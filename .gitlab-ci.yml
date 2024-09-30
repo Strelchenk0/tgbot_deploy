@@ -54,7 +54,8 @@ terraform_apply:
     - terraform init
     - terraform apply -input=false "planfile"
     - echo "Saving elastic-ip from terraform output"
-    - export ELASTIC_IP=$(terraform output -raw elastic_ip)  # Отримати значення elastic-ip
+    - export ELASTIC_IP=$(terraform output -raw elastic_ip)
+    - mkdir -p terraform # Отримати значення elastic-ip
     - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform/terraform.env  
     - echo "Elastic IP:${ELASTIC_IP}"
   artifacts:
