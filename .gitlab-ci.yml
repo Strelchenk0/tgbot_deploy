@@ -54,13 +54,13 @@ terraform_apply:
     - terraform init
     - terraform apply -input=false "planfile"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)
-    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform/terraform.env  
+    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env  
     - echo "Elastic IP:${ELASTIC_IP}" 
     - ls -la
   artifacts:
     paths:
       - terraform/terraform.tfstate
-      - terraform/terraform.env   #
+      - terraform.env   #
   when: manual
 
 # Запуск Ansible Playbook
