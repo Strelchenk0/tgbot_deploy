@@ -60,7 +60,7 @@ terraform_apply:
   artifacts:
     paths:
       - terraform/terraform.tfstate
-      - terraform.env   #
+      - terraform/terraform.env   #
   when: manual
 
 # Запуск Ansible Playbook
