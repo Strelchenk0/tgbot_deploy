@@ -3,17 +3,24 @@
   hosts: localhost
   become: yes
   vars:
-    elastic_ip: "{{ elastic_ip }}"
+    elastic_ip: "{{ lookup('env', 'ELASTIC_IP') }}"
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
-    - set_fact:
-        elastic_ip: "{{ lookup('env', 'ELASTIC_IP') }}"
-
     - name: Ensure Docker is installed
       apt:
         name: docker.io
         state: present
+
+    - name: Ensure pip is installed #
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Ensure requests library is installed    
+      pip:
+        name: requests
+        state: present #
 
     - name: Log in to Docker Hub
       community.docker.docker_login:
@@ -37,4 +44,3 @@
         state: started
         ports:
           - "80:80"
-
