@@ -3,9 +3,14 @@
   hosts: webservers
   become: yes
   vars:
+    elastic_ip: "{{ elastic_ip }}"
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
+
+    - name: Виконати завдання з використанням elastic_ip
+      debug:
+        msg: "Elastic IP: {{ elastic_ip }}"
 
     - name: Ensure Docker is installed
       apt:
