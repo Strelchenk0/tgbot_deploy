@@ -55,6 +55,7 @@ terraform_apply:
     - terraform apply -input=false "planfile"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)
     - echo "Elastic IP:${ELASTIC_IP}" 
+    - echo "ELASTIC_IP=${ELASTIC_IP}" > .env
   artifacts:
     reports:
       dotenv: .env
