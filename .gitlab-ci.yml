@@ -54,16 +54,13 @@ terraform_apply:
     - terraform init
     - terraform apply -input=false "planfile"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)
-    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env  
+    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform/terraform.env  
     - echo "Elastic IP:${ELASTIC_IP}" 
     - ls -la
   artifacts:
-    expire_in: 1 hour
-    # reports:
-    #   dotenv: terraform.env 
     paths:
       - terraform/terraform.tfstate
-      - terraform.env   #
+      - terraform/terraform.env   #
   when: manual
 
 # Запуск Ansible Playbook
@@ -77,10 +74,9 @@ run_ansible:
     - ansible-galaxy collection install community.docker
   script:
     - ansible --version
-    - cd terraform
     - echo "Elastic IP:${ELASTIC_IP}" 
-    - ansible-playbook --syntax-check ../vm-setup-playbook.yml
-    - ansible-playbook --inventory ../ansible/inventory/hosts.ini ../vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
+    - ansible-playbook --syntax-check vm-setup-playbook.yml
+    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   dependencies:
     - terraform_apply
   when: manual
