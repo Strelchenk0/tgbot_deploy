@@ -53,10 +53,12 @@ terraform_apply:
     - rm -rf .terraform  # Очистка кешу Terraform
     - terraform init
     - terraform apply -input=false "planfile"
+    - echo "test" >> terraform.env   #
     - echo "Saving elastic-ip from terraform output"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)
     - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env  
-    - echo "Elastic IP:${ELASTIC_IP}"
+    - echo "Elastic IP:${ELASTIC_IP}" 
+    - ls -la
   artifacts:
     expire_in: 1 hour
     reports:
