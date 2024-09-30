@@ -53,8 +53,6 @@ terraform_apply:
     - rm -rf .terraform  # Очистка кешу Terraform
     - terraform init
     - terraform apply -input=false "planfile"
-    - echo "test" >> terraform.env   #
-    - echo "Saving elastic-ip from terraform output"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)
     - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env  
     - echo "Elastic IP:${ELASTIC_IP}" 
@@ -78,14 +76,10 @@ run_ansible:
     - ansible --version
     - ansible-galaxy collection install community.docker
   script:
-    - echo "Elastic IP:${ELASTIC_IP}"
-    # Оновлення hosts.ini з динамічною IP-адресою
-    - echo "[webservers]" > ansible/inventory/hosts.ini
-    - echo "elastic_host ansible_host=${ELASTIC_IP} ansible_user=ubuntu ansible_ssh_private_key_file=../../my_new_key.pem" >> ansible/inventory/hosts.ini
-    # Перевірка синтаксису playbook
+    - ansible --version
+    - echo "Elastic IP:${ELASTIC_IP}" 
     - ansible-playbook --syntax-check vm-setup-playbook.yml
-    # Запуск playbook з оновленим інвентарем
-    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml
+    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   dependencies:
     - terraform_apply
   when: manual
