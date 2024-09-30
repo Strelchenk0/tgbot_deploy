@@ -11,17 +11,17 @@
         name: docker.io
         state: present
 
-    - name: Start Docker service
+    - name: Check Docker service status
+      command: systemctl is-active docker
+      register: docker_status
+      ignore_errors: yes
+
+    - name: Start Docker service if not active
       systemd:
         name: docker
         state: started
         enabled: yes
-
-    - name: Wait for Docker to be available
-      wait_for:
-        port: 2375
-        delay: 5
-        timeout: 30
+      when: docker_status.rc != 0
 
     - name: Ensure pip is installed
       apt:
