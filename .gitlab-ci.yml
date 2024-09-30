@@ -56,7 +56,7 @@ terraform_apply:
     - echo "test" >> terraform.env   #
     - echo "Saving elastic-ip from terraform output"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)
-    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform/terraform.env  
+    - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env  
     - echo "Elastic IP:${ELASTIC_IP}" 
     - ls -la
   artifacts:
@@ -65,7 +65,7 @@ terraform_apply:
     #   dotenv: terraform.env 
     paths:
       - terraform/terraform.tfstate
-      - terraform/terrarorm.env   #
+      - terrarorm.env   #
   when: manual
 
 # Запуск Ansible Playbook
