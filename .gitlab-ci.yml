@@ -77,9 +77,10 @@ run_ansible:
     - ansible-galaxy collection install community.docker
   script:
     - ansible --version
+    - cd terraform
     - echo "Elastic IP:${ELASTIC_IP}" 
-    - ansible-playbook --syntax-check vm-setup-playbook.yml
-    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
+    - ansible-playbook --syntax-check ../vm-setup-playbook.yml
+    - ansible-playbook --inventory ../ansible/inventory/hosts.ini ../vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   dependencies:
     - terraform_apply
   when: manual
