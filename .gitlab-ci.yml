@@ -56,10 +56,11 @@ terraform_apply:
     - echo "Saving elastic-ip from terraform output"
     - export ELASTIC_IP=$(terraform output -raw elastic_ip)  # Отримати значення elastic-ip
     - echo "ELASTIC_IP=${ELASTIC_IP}" >> terraform.env  
+    - echo "Elastic IP:${ELASTIC_IP}"
   artifacts:
     expire_in: 1 hour
     reports:
-      dotenv: terraform/terraform.env 
+      dotenv: terraform.env 
     paths:
       - terraform/terraform.tfstate   # Зберегти в артефакти як змінну середовища    # Зберегти в .env файл
   when: manual
