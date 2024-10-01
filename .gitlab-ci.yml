@@ -67,7 +67,7 @@ terraform_apply:
 # Запуск Ansible Playbook
 run_ansible:
   stage: run_ansible
-  image: python:3.8
+  image: python:3.12
   before_script:
     - pip install --upgrade pip
     - pip install ansible
