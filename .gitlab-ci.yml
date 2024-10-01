@@ -74,6 +74,7 @@ run_ansible:
     - ansible --version
     - ansible-galaxy collection install community.docker
     - ulimit -n 524288
+    - pip3 install requests
   script:
     - ansible --version
     - echo "Elastic IP:${ELASTIC_IP}" 
