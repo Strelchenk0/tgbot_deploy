@@ -5,16 +5,12 @@ image:
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
   AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
   IMAGE_NAME: strelchenk0nazar/tgbot_deploy
   IMAGE_TAG: tgbot_deploy
   AWS_DEFAULT_REGION: "us-east-1"
 
-before_script:
-  - ulimit -n 524288
 
 stages:
   # - build_docker_image
@@ -77,6 +73,7 @@ run_ansible:
     - pip install ansible
     - ansible --version
     - ansible-galaxy collection install community.docker
+    - ulimit -n 524288
   script:
     - ansible --version
     - echo "Elastic IP:${ELASTIC_IP}" 
