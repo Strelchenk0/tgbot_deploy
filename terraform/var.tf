@@ -11,7 +11,7 @@ variable "ami" {
 }
 
 variable "public_path" {
-  default = "../my_new_key.pub"
+  default = "../key.pub"
 }
 
 
