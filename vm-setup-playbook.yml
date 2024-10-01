@@ -1,12 +1,9 @@
----
 - name: Deploy Docker container
-  hosts: webservers
-  become: yes
-  vars:
-    IMAGE_NAME: strelchenk0nazar/tgbot_deploy
-    IMAGE_TAG: tgbot_deploy
+  hosts: elastic_host
+  become: true
+
   tasks:
-    - name: Install necessary packages for Docker
+    - name: Ensure required packages are installed
       apt:
         name:
           - apt-transport-https
@@ -16,40 +13,49 @@
         state: present
         update_cache: yes
 
-    - name: Add Docker's official GPG key
-      apt_key:
+    - name: Download Docker GPG key
+      get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /tmp/docker.gpg
+
+    - name: Add Docker GPG key
+      apt_key:
+        file: /tmp/docker.gpg
         state: present
+
+    - name: Get Ubuntu codename
+      command: lsb_release -cs
+      register: ubuntu_codename
 
     - name: Add Docker's APT repository
       apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_codename.stdout }} stable"
         state: present
 
-    - name: Ensure Docker is installed
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
       apt:
         name: docker-ce
         state: present
-        update_cache: yes
 
-    - name: Log in to Docker Hub
-      community.docker.docker_login:
-        username: strelchenk0nazar
-        password: WGdolarpo30N
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
 
-    - name: Pull Docker image from repository
+    - name: Pull Docker image
       community.docker.docker_image:
-        name: "{{ IMAGE_NAME }}:{{ IMAGE_TAG }}"
+        name: "{{ IMAGE_NAME }}"
+        tag: "{{ IMAGE_TAG }}"
         source: pull
-
-    - name: Stop and remove existing container if any
-      community.docker.docker_container:
-        name: tgbot_deploy
-        state: absent
 
     - name: Run Docker container
       community.docker.docker_container:
-        name: tgbot_deploy
+        name: "tgbot_container"
         image: "{{ IMAGE_NAME }}:{{ IMAGE_TAG }}"
         state: started
         ports:
