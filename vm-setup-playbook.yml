@@ -2,61 +2,15 @@
 - name: Deploy Docker container
   hosts: webservers
   become: yes
-  become_method: sudo
   vars:
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
 
-    - name: Install required packages for Docker
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - gnupg
-          - lsb-release
-        state: present
-      become: yes
-
-    - name: Add Docker's official GPG key
-      command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-      become: yes
-
-    - name: Set up the Docker APT repository
-      apt_repository:
-        repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-        state: present
-      become: yes
-
     - name: Ensure Docker is installed
       apt:
-        name: 
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
+        name: docker.io
         state: present
-        update_cache: yes
-      become: yes
-
-    - name: Ensure Docker service is started and enabled
-      systemd:
-        name: docker
-        state: started
-        enabled: yes
-      become: yes
-
-    - name: Ensure pip is installed
-      apt:
-        name: python3-pip
-        state: present
-      become: yes
-
-    - name: Ensure requests library is installed
-      pip:
-        name: requests
-        state: present
-      become: yes
 
     - name: Log in to Docker Hub
       community.docker.docker_login:
@@ -80,3 +34,4 @@
         state: started
         ports:
           - "80:80"
+
