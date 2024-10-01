@@ -79,7 +79,7 @@ run_ansible:
   script:
     - ansible --version
     # - apt-get update && apt-get install -y docker.io
-    # - export ANSIBLE_HOST_KEY_CHECKING=False
+    - export ANSIBLE_HOST_KEY_CHECKING=False
     - echo "Elastic IP:${ELASTIC_IP}" 
     - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   dependencies:
