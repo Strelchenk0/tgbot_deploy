@@ -9,7 +9,7 @@ variables:
   AWS_DEFAULT_REGION: "us-east-1"
 
 stages:
-  # - build_docker_image
+  - build_docker_image
   - terraform_plan
   - terraform_apply
   - run_ansible
