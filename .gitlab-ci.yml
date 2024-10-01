@@ -74,7 +74,7 @@ run_ansible:
     - ansible-galaxy collection install community.docker
     - pip3 install requests
     - echo "$SSH_KEY" > ./key.pem
-    # - chmod 600 ./key.pem 
+    - chmod 600 ./key.pem 
     - echo "Elastic IP:${ELASTIC_IP}" 
   script:
     - ansible --version
