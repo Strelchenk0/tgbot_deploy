@@ -6,11 +6,31 @@
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
+    - name: Install necessary packages for Docker
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+        update_cache: yes
+
+    - name: Add Docker's official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker's APT repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+        state: present
 
     - name: Ensure Docker is installed
       apt:
-        name: docker.io
+        name: docker-ce
         state: present
+        update_cache: yes
 
     - name: Log in to Docker Hub
       community.docker.docker_login:
@@ -34,4 +54,3 @@
         state: started
         ports:
           - "80:80"
-
