@@ -73,11 +73,11 @@ run_ansible:
     - pip install ansible
     - ansible --version
     - ansible-galaxy collection install community.docker
-    - ulimit -n 524288
     - pip3 install requests
   script:
     - ansible --version
     - export ANSIBLE_HOST_KEY_CHECKING=False
+    - chmod 400 "key.pem"
     - echo "Elastic IP:${ELASTIC_IP}" 
     - ansible-playbook --syntax-check playbook.yml
     - ansible-playbook --inventory ansible/inventory/hosts.ini playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
