@@ -77,6 +77,7 @@ run_ansible:
     - pip3 install requests
   script:
     - ansible --version
+    - export ANSIBLE_HOST_KEY_CHECKING=False
     - echo "Elastic IP:${ELASTIC_IP}" 
     - ansible-playbook --syntax-check playbook.yml
     - ansible-playbook --inventory ansible/inventory/hosts.ini playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
