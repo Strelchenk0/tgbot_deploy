@@ -6,10 +6,19 @@
     IMAGE_NAME: strelchenk0nazar/tgbot_deploy
     IMAGE_TAG: tgbot_deploy
   tasks:
-
     - name: Ensure Docker is installed
       apt:
         name: docker.io
+        state: present
+
+    - name: Ensure pip is installed
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Ensure requests library is installed
+      pip:
+        name: requests
         state: present
 
     - name: Log in to Docker Hub
@@ -34,4 +43,3 @@
         state: started
         ports:
           - "80:80"
-
