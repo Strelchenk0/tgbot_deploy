@@ -74,13 +74,12 @@ run_ansible:
     - ansible --version
     - ansible-galaxy collection install community.docker
     - pip3 install requests
+    - chmod 600 ./key.pem 
   script:
     - ansible --version
     - export ANSIBLE_HOST_KEY_CHECKING=False
-    - chmod 400 "key.pem"
     - echo "Elastic IP:${ELASTIC_IP}" 
-    - ansible-playbook --syntax-check playbook.yml
-    - ansible-playbook --inventory ansible/inventory/hosts.ini playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
+    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   dependencies:
     - terraform_apply
   when: manual
