@@ -75,8 +75,8 @@ run_ansible:
   script:
     - ansible --version
     - echo "Elastic IP:${ELASTIC_IP}" 
-    - ansible-playbook --syntax-check vm-setup-playbook.yml
-    - ansible-playbook --inventory ansible/inventory/hosts.ini vm-setup-playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
+    - ansible-playbook --syntax-check playbook.yml
+    - ansible-playbook --inventory ansible/inventory/hosts.ini playbook.yml --extra-vars "elastic_ip=${ELASTIC_IP}"
   dependencies:
     - terraform_apply
   when: manual
