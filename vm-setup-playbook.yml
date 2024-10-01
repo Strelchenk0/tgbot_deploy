@@ -2,6 +2,9 @@
   hosts: elastic_host
   become: true
 
+  vars:
+    IMAGE_NAME: strelchenk0nazar/tgbot_deploy
+    IMAGE_TAG: tgbot_deploy
   tasks:
     - name: Ensure required packages are installed
       apt:
