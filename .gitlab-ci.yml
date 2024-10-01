@@ -1,8 +1,5 @@
 image:
   name: hashicorp/terraform:1.9.5
-  entrypoint:
-    - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
 variables:
   AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY}
@@ -10,7 +7,6 @@ variables:
   IMAGE_NAME: strelchenk0nazar/tgbot_deploy
   IMAGE_TAG: tgbot_deploy
   AWS_DEFAULT_REGION: "us-east-1"
-
 
 stages:
   # - build_docker_image
@@ -20,15 +16,15 @@ stages:
   - terraform_destroy
 
 # Етап збірки Docker-образу
-# build_docker_image:
-#   stage: build_docker_image
-#   image: docker:latest
-#   services:
-#     - docker:20.10.16-dind
-#   script:
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-#     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-#     - docker push $IMAGE_NAME:$IMAGE_TAG
+build_docker_image:
+  stage: build_docker_image
+  image: docker:latest
+  services:
+    - docker:20.10.16-dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
 
 # Ініціалізація та перевірка Terraform
 terraform_plan:

@@ -1,4 +1,0 @@
-# - name: Create a dir
-#   file:
-#     path: /home/ubuntu/basic-http-server  # або будь-який інший абсолютний шлях
-#     state: directory

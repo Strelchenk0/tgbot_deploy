@@ -1,4 +1,26 @@
-../node_modules
-../.gitignore
+# ../node_modules
+# ../.gitignore
 # ../.gitlab-ci.yml
 # .gitlab-ci.yml
+
+
+# Ігноруємо директорії та файли, які не потрібні в образі
+node_modules/
+.git/
+.gitignore
+.gitlab-ci.yml
+*.tfstate
+*.tfstate.backup
+.terraform/
+Dockerfile
+.gitscript.sh
+key.pem
+key.pub
+Makefile
+README.md
+playbook.yml
+vm-setup-playbook.yml
+
+# Якщо у вас є лог-файли або інші тимчасові файли
+logs/
+tmp/
