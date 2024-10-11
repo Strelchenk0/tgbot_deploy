@@ -3,11 +3,9 @@ This project is focused on creating and deploying a simple Telegram bot that tra
 
     //   DEVELOPMENT //
 The core functionality of the project is a Telegram bot. This bot:
- -- Tracks Bitcoin prices in real-time.
- -- Provides basic statistics for specified time intervals (e.g., hourly, daily, weekly).
- -- Uses an external API or a data source to fetch and analyze the Bitcoin price trends.
-
-
+ - Tracks Bitcoin prices in real-time.
+ - Provides basic statistics for specified time intervals (e.g., hourly, daily, weekly).
+ - Uses an external API or a data source to fetch and analyze the Bitcoin price trends.
 
    //   DEVELOPMENT PROCESS   //
     1. Terraform (Infrastructure as Code)
