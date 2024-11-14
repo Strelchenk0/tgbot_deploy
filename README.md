@@ -16,6 +16,9 @@ Terraform is used to automate the provisioning of cloud infrastructure, specific
 2. Key-based authentication: Terraform uses the key.pub file to ensure secure access to the instance.
 3. The process of creating and managing infrastructure is done through Terraform configurations and can be applied or destroyed as needed.
 
+<div style="margin-left: 20px;">
+Цей текст має відступ, використовуючи HTML-стиль.
+</div>
 
  <blockquote>
 <strong> - Ansible (Configuration Management) </strong> 
