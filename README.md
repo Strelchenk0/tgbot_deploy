@@ -1,13 +1,13 @@
-    // PROJECT OVERVIEW  //
+    PROJECT OVERVIEW  
 This project is focused on creating and deploying a simple Telegram bot that tracks Bitcoin prices. The bot provides basic statistical data about Bitcoin's price over different periods of time. It was developed to automate the process of gathering and displaying price data using Docker containers and infrastructure as code tools like Terraform and Ansible.
 
-    //   DEVELOPMENT //
+    DEVELOPMENT 
 The core functionality of the project is a Telegram bot. This bot:
  - Tracks Bitcoin prices in real-time.
  - Provides basic statistics for specified time intervals (e.g., hourly, daily, weekly).
  - Uses an external API or a data source to fetch and analyze the Bitcoin price trends.
 
-//   DEVELOPMENT PROCESS   //
+   DEVELOPMENT PROCESS   
 - Terraform (Infrastructure as Code)
 Terraform is used to automate the provisioning of cloud infrastructure, specifically on AWS:
 1. Instance creation: Terraform is configured to create an EC2 instance with an Elastic IP and a security group for the bot.
@@ -38,11 +38,11 @@ A GitLab CI pipeline has been created to automate the full deployment workflow, 
         5. Terraform Destroy:
         Once the bot has completed its task or if the infrastructure is no longer needed, Terraform is used to destroy the infrastructure, releasing all resources (such as the EC2 instance and Elastic IP).
 
-//  FEATURE: ///
+    FEATURE: 
 Dynamic Elastic IP Management: The pipeline dynamically saves the Elastic IP created by Terraform and passes it as an artifact to Ansible, ensuring the bot is deployed to the correct server. 
 
 
-//  USED TEHNOLOGIES:  //
+    USED TEHNOLOGIES:  
 - NodeJS
 - Terraform  
 - Ansible
