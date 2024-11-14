@@ -55,3 +55,21 @@ Dynamic Elastic IP Management: The pipeline dynamically saves the Elastic IP cre
   - Git  
   - GitLab CI/CD  
   - AWS (EC2, AMI)  
+
+
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+
