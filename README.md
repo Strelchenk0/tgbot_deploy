@@ -9,7 +9,7 @@ The core functionality of the project is a Telegram bot. This bot:
 
 # DEVELOPMENT PROCESS   
  <blockquote>
-<strong>Note:</strong>  - Terraform (Infrastructure as Code)
+<strong> - Terraform (Infrastructure as Code) </strong> 
 </blockquote>
 Terraform is used to automate the provisioning of cloud infrastructure, specifically on AWS:
 1. Instance creation: Terraform is configured to create an EC2 instance with an Elastic IP and a security group for the bot.
