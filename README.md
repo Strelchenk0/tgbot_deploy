@@ -8,7 +8,7 @@ The core functionality of the project is a Telegram bot. This bot:
  - Uses an external API or a data source to fetch and analyze the Bitcoin price trends.
 
 # DEVELOPMENT PROCESS   
-        - Terraform (Infrastructure as Code)
+         - Terraform (Infrastructure as Code)
 Terraform is used to automate the provisioning of cloud infrastructure, specifically on AWS:
 1. Instance creation: Terraform is configured to create an EC2 instance with an Elastic IP and a security group for the bot.
 2. Key-based authentication: Terraform uses the key.pub file to ensure secure access to the instance.
