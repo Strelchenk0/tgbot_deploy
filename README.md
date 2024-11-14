@@ -41,16 +41,16 @@ A GitLab CI pipeline has been created to automate the full deployment workflow, 
 </blockquote> 
 The bot's code is packaged into a Docker image, ensuring it runs in a consistent environment.
 
- ### Terraform Plan:
+ < Terraform Plan: > 
 Terraform is used to create a plan for provisioning infrastructure. This stage prepares the resources needed to run the bot.
 
- ### Terraform Apply:
+ < Terraform Apply: >
 Terraform applies the infrastructure plan, provisioning the necessary AWS resources (EC2 instance, security groups, etc.).
 
- ###  Run Ansible:
+< Run Ansible: >
 Ansible is triggered to connect to the provisioned instance and perform the necessary setup and container deployment.
 
- ### Terraform Destroy:
+< Terraform Destroy: >
 Once the bot has completed its task or if the infrastructure is no longer needed, Terraform is used to destroy the infrastructure, releasing all resources (such as the EC2 instance and Elastic IP).
 
 # FEATURE: 
