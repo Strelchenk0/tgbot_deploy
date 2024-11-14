@@ -43,7 +43,7 @@ Ansible is triggered to connect to the provisioned instance and perform the nece
 * Terraform Destroy
 Once the bot has completed its task or if the infrastructure is no longer needed, Terraform is used to destroy the infrastructure, releasing all resources (such as the EC2 instance and Elastic IP).
 
-> [!FEATURE]
+> [!IMPORTANT]
 > Dynamic Elastic IP Management: The pipeline dynamically saves the Elastic IP created by Terraform and passes it as an artifact to Ansible, ensuring the bot is deployed to the correct server. 
 
 
