@@ -7,7 +7,7 @@ The core functionality of the project is a Telegram bot. This bot:
  - Provides basic statistics for specified time intervals (e.g., hourly, daily, weekly).
  - Uses an external API or a data source to fetch and analyze the Bitcoin price trends.
 
-    //   DEVELOPMENT PROCESS   //
+//   DEVELOPMENT PROCESS   //
     1. Terraform (Infrastructure as Code)
     Terraform is used to automate the provisioning of cloud infrastructure, specifically on AWS:
         1. Instance creation: Terraform is configured to create an EC2 instance with an Elastic IP and a security group for the bot.
@@ -38,11 +38,11 @@ The core functionality of the project is a Telegram bot. This bot:
         5. Terraform Destroy:
         Once the bot has completed its task or if the infrastructure is no longer needed, Terraform is used to destroy the infrastructure, releasing all resources (such as the EC2 instance and Elastic IP).
 
-        FEATURE:
-     ///   Dynamic Elastic IP Management: The pipeline dynamically saves the Elastic IP created by Terraform and passes it as an artifact to Ansible, ensuring the bot is deployed to the correct server.  ///
+//  FEATURE: ///
+      Dynamic Elastic IP Management: The pipeline dynamically saves the Elastic IP created by Terraform and passes it as an artifact to Ansible, ensuring the bot is deployed to the correct server. 
 
 
-USED TEHNOLOGIES:
+// USED TEHNOLOGIES: //
 - NodeJS
 - Terraform  
 - Ansible
